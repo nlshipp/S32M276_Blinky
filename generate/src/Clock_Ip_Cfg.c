@@ -371,7 +371,7 @@ static const Clock_Ip_DividerConfigType Clock_Ip_DividerConfigurations_0[CLOCK_I
     #if CLOCK_IP_CONFIGURED_DIVIDERS_0_NO > 6U
     {
         HSE_CLK,                    /* name */
-        1U,                              /* value */
+        2U,                              /* value */
         {
             0U,
         }
@@ -890,7 +890,7 @@ static const Clock_Ip_CmuConfigType Clock_Ip_CmuConfigurations_0[CLOCK_IP_CONFIG
             CMU_FC_IER_FLLAIE(0U) |
             CMU_FC_IER_FHHAIE(0U)
         ),
-        120000000U,
+        60000000U,
         {
                 0U,          /* Start index in register values array */
                 0U,          /* End index in register values array */

@@ -42,7 +42,7 @@ outputs:
 - {id: FLEXCANA_CLK.outFreq, value: 24 MHz}
 - {id: FLEXIO0_CLK.outFreq, value: 60 MHz}
 - {id: FXOSCOUT.outFreq, value: 16 MHz}
-- {id: HSE_CLK.outFreq, value: 120 MHz}
+- {id: HSE_CLK.outFreq, value: 60 MHz}
 - {id: INTM_CLK.outFreq, value: 60 MHz}
 - {id: LCU0_CLK.outFreq, value: 120 MHz}
 - {id: LCU1_CLK.outFreq, value: 120 MHz}
@@ -88,7 +88,7 @@ settings:
 - {id: MC_CGM_MUX_0_DIV1_Trigger, value: Common}
 - {id: MC_CGM_MUX_0_DIV2.scale, value: '4', locked: true}
 - {id: MC_CGM_MUX_0_DIV2_Trigger, value: Common}
-- {id: MC_CGM_MUX_0_DIV3.scale, value: '1', locked: true}
+- {id: MC_CGM_MUX_0_DIV3.scale, value: '2', locked: true}
 - {id: MC_CGM_MUX_0_DIV3_Trigger, value: Common}
 - {id: MC_CGM_MUX_0_DIV4.scale, value: '4', locked: true}
 - {id: MC_CGM_MUX_0_DIV4_Trigger, value: Common}

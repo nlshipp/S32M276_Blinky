@@ -149,7 +149,7 @@
                   <clock_output id="FLEXCANA_CLK.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="FLEXIO0_CLK.outFreq" value="60 MHz" locked="false" accuracy=""/>
                   <clock_output id="FXOSCOUT.outFreq" value="16 MHz" locked="false" accuracy=""/>
-                  <clock_output id="HSE_CLK.outFreq" value="120 MHz" locked="false" accuracy=""/>
+                  <clock_output id="HSE_CLK.outFreq" value="60 MHz" locked="false" accuracy=""/>
                   <clock_output id="INTM_CLK.outFreq" value="60 MHz" locked="false" accuracy=""/>
                   <clock_output id="LCU0_CLK.outFreq" value="120 MHz" locked="false" accuracy=""/>
                   <clock_output id="LCU1_CLK.outFreq" value="120 MHz" locked="false" accuracy=""/>
@@ -196,7 +196,7 @@
                   <setting id="MC_CGM_MUX_0_DIV1_Trigger" value="Common" locked="false"/>
                   <setting id="MC_CGM_MUX_0_DIV2.scale" value="4" locked="true"/>
                   <setting id="MC_CGM_MUX_0_DIV2_Trigger" value="Common" locked="false"/>
-                  <setting id="MC_CGM_MUX_0_DIV3.scale" value="1" locked="true"/>
+                  <setting id="MC_CGM_MUX_0_DIV3.scale" value="2" locked="true"/>
                   <setting id="MC_CGM_MUX_0_DIV3_Trigger" value="Common" locked="false"/>
                   <setting id="MC_CGM_MUX_0_DIV4.scale" value="4" locked="true"/>
                   <setting id="MC_CGM_MUX_0_DIV4_Trigger" value="Common" locked="false"/>
@@ -341,6 +341,16 @@
                   <data type="Version">1.0.0</data>
                </feature>
             </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.driver.swt_ip" description="swt_ip is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.driver.swt_ip" description="An unsupported version of the swt_ip in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. The project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">1.0.0</data>
+               </feature>
+            </dependency>
             <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
                <feature name="enabled" evaluation="equal">
                   <data>true</data>
@@ -352,8 +362,13 @@
             <file path="generate/include/OsIf_Cfg.h" update_enabled="true"/>
             <file path="generate/include/Siul2_Dio_Ip_Cfg.h" update_enabled="true"/>
             <file path="generate/include/Siul2_Port_Ip_Defines.h" update_enabled="true"/>
+            <file path="generate/include/Swt_Ip_BOARD_InitPeripherals_PBcfg.h" update_enabled="true"/>
+            <file path="generate/include/Swt_Ip_Cfg.h" update_enabled="true"/>
+            <file path="generate/include/Swt_Ip_Cfg_Defines.h" update_enabled="true"/>
+            <file path="generate/include/Swt_Ip_DeviceRegisters.h" update_enabled="true"/>
             <file path="generate/include/modules.h" update_enabled="true"/>
             <file path="generate/src/OsIf_Cfg.c" update_enabled="true"/>
+            <file path="generate/src/Swt_Ip_BOARD_InitPeripherals_PBcfg.c" update_enabled="true"/>
          </generated_project_files>
          <peripherals_profile>
             <processor_version>0.0.0</processor_version>
@@ -460,19 +475,6 @@
                         </array>
                      </config_set>
                   </instance>
-                  <instance name="EcuC" uuid="2a845020-424b-4338-ad50-15c1da2c3a74" type="EcuC" type_id="EcuC" mode="general" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
-                     <config_set name="EcuC">
-                        <setting name="Name" value="EcuC"/>
-                        <struct name="ConfigTimeSupport">
-                           <setting name="POST_BUILD_VARIANT_USED" value="false"/>
-                           <setting name="IMPLEMENTATION_CONFIG_VARIANT" value="VARIANT-PRE-COMPILE"/>
-                        </struct>
-                        <array name="EcucPduCollection"/>
-                        <array name="EcucPartitionCollection"/>
-                        <array name="EcucHardware"/>
-                        <array name="EcucPostBuildVariants"/>
-                     </config_set>
-                  </instance>
                   <instance name="Siul2_Dio" uuid="95cbda33-c97b-42df-990c-43ef8cbf7a70" type="Siul2_Dio" type_id="Siul2_Dio" mode="ip" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="Siul2_Dio">
                         <setting name="Name" value="Siul2_Dio"/>
@@ -483,6 +485,45 @@
                         <struct name="DioGeneral">
                            <setting name="Name" value="DioGeneral"/>
                            <setting name="SIUL2DioIPDevErrorDetect" value="true"/>
+                        </struct>
+                     </config_set>
+                  </instance>
+                  <instance name="Swt_Ip" uuid="77168e51-f77a-43e6-9ebe-611f05f2bbef" type="Swt_Ip" type_id="Swt_Ip" mode="ip" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="Swt_Ip">
+                        <setting name="Name" value="Swt_Ip"/>
+                        <struct name="SwtUserCfg">
+                           <setting name="Name" value="Wdg_Configuration"/>
+                           <setting name="SwtDevErrorDetect" value="false"/>
+                           <setting name="SwtDisableAllowed" value="true"/>
+                           <setting name="SwtEnableClearResetRequest" value="false"/>
+                           <setting name="SwtOsifTimeoutMethod" value="OSIF_COUNTER_DUMMY"/>
+                           <setting name="SwtOsifTimeoutVal" value="3000"/>
+                           <setting name="WdgRunArea" value="RAM"/>
+                           <array name="swtSettingsConfigRef">
+                              <struct name="0">
+                                 <setting name="Name" value="Swt_Ip_Cfg0"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster0" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster1" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster2" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster3" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster4" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster5" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster6" value="true"/>
+                                 <setting name="WdgMasterAccessProtectionforMaster7" value="true"/>
+                                 <setting name="WdgResetOnInvalidAccess" value="BusError"/>
+                                 <setting name="WdgRunsInStopMode" value="false"/>
+                                 <setting name="WdgRunsInDebugMode" value="false"/>
+                                 <setting name="WdgOperationMode" value="Interrupt"/>
+                                 <setting name="WdgKeyedService" value="false"/>
+                                 <setting name="WdgServiceKeyValue" value="0"/>
+                                 <setting name="WdgTimeoutPeriod" value="3"/>
+                                 <setting name="WdgWindowMode" value="false"/>
+                                 <setting name="WdgWindowPeriod" value="0"/>
+                                 <setting name="WdgSoftLockConfiguration" value="false"/>
+                                 <setting name="WdgHardLockConfiguration" value="false"/>
+                                 <setting name="SwtCallbackNotification" value="Swt_CallbackNotification0"/>
+                              </struct>
+                           </array>
                         </struct>
                      </config_set>
                   </instance>

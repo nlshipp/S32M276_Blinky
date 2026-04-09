@@ -37,7 +37,7 @@ volatile int exit_code = 0;
 #include <Clock_Ip.h>
 #include <Siul2_Port_Ip.h>
 #include <Siul2_Dio_Ip.h>
-
+#include <Swt_Ip.h>
 
 void TestDelay(uint32 delay);
 void TestDelay(uint32 delay)
@@ -48,6 +48,11 @@ void TestDelay(uint32 delay)
 		DelayTimer++;
 	}
 	DelayTimer=0;
+}
+
+void Swt_CallbackNotification0(void)
+{
+
 }
 
 /*!
@@ -63,6 +68,8 @@ int main(void)
 
     Siul2_Port_Ip_Init(NUM_OF_CONFIGURED_PINS0, g_pin_mux_InitConfigArr0);
 
+    Swt_Ip_Init(0, &Swt_Ip_Cfg0);
+
     uint8 i = 0;
 
     for(;;)
@@ -72,10 +79,14 @@ int main(void)
 
     	TestDelay(4800000);
 
+    	Swt_Ip_Service(0);
+
     	Siul2_Dio_Ip_WritePin(LED0_PORT, LED0_PIN, 0U);
     	Siul2_Dio_Ip_WritePin(LED1_PORT, LED1_PIN, 1U);
 
     	TestDelay(4800000);
+
+    	Swt_Ip_Service(0);
 
         if(exit_code != 0)
         {
