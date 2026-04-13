@@ -25,7 +25,7 @@
     <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.PE.USE_EXTERNAL_SERVER" value="true"/>
     <intAttribute key="com.pemicro.debug.gdbjtag.pne.algorithmIndex" value="0"/>
     <stringAttribute key="com.pemicro.debug.gdbjtag.pne.alternativeAlgorithmPath" value=""/>
-    <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.attachToRunning" value="true"/>
+    <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.attachToRunning" value="false"/>
     <stringAttribute key="com.pemicro.debug.gdbjtag.pne.customTrimFrequency" value="0"/>
     <booleanAttribute key="com.pemicro.debug.gdbjtag.pne.cyc_eth.ALWAYS_ERASE" value="false"/>
     <stringAttribute key="com.pemicro.debug.gdbjtag.pne.cyc_eth.CYCLONE_IP" value=""/>

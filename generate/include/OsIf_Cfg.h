@@ -110,7 +110,7 @@ extern "C"{
 
 #define USING_OS_BAREMETAL
 
-#define OSIF_USE_SYSTEM_TIMER            (STD_OFF)
+#define OSIF_USE_SYSTEM_TIMER            (STD_ON)
 
 #define OSIF_USE_CUSTOM_TIMER            (STD_OFF)
 

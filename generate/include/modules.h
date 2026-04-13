@@ -206,7 +206,7 @@ extern "C" {
 /** 
 * @brief This constant used for other modules to check if MCU is present in the project.   
 */
-#define USE_MCU_MODULE              (STD_OFF)
+#define USE_MCU_MODULE              (STD_ON)
 
 /** 
 * @brief This constant used for other modules to check if OCU is present in the project.   

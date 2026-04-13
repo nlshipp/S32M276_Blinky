@@ -38,6 +38,8 @@ volatile int exit_code = 0;
 #include <Siul2_Port_Ip.h>
 #include <Siul2_Dio_Ip.h>
 #include <Swt_Ip.h>
+#include <OsIf.h>
+#include <Mcu.h>
 
 void TestDelay(uint32 delay);
 void TestDelay(uint32 delay)
@@ -55,6 +57,8 @@ void Swt_CallbackNotification0(void)
 
 }
 
+uint32 pllLoop = 0;
+
 /*!
   \brief The main function for the project.
   \details The startup initialization sequence is the following:
@@ -63,28 +67,65 @@ void Swt_CallbackNotification0(void)
 */
 int main(void)
 {
-	// initialize clock driver
-    Clock_Ip_Init(Clock_Ip_aClockConfig);
+	Mcu_Init(&Mcu_Config_BOARD_InitPeripherals);
+
+	/* Initialize the clock tree and apply PLL as system clock */
+	Mcu_InitClock(McuClockSettingConfig_0);
+
+	while (Mcu_GetPllStatus() != MCU_PLL_LOCKED)
+	{
+		pllLoop ++;
+	}
+	Mcu_DistributePllClock();
+
+	OsIf_Init(NULL);
+
 
     Siul2_Port_Ip_Init(NUM_OF_CONFIGURED_PINS0, g_pin_mux_InitConfigArr0);
 
     Swt_Ip_Init(0, &Swt_Ip_Cfg0);
 
+	/* Apply a mode configuration - perform after configuration is set */
+	Mcu_SetMode(McuModeSettingConf_0);
+
     uint8 i = 0;
+
+    uint32 timer = OsIf_GetCounter(OSIF_COUNTER_SYSTEM);
+    uint32 usec_in_ticks = OsIf_MicrosToTicks(1000000, OSIF_COUNTER_SYSTEM);
+    uint32 elapsed = 0;
 
     for(;;)
     {
     	Siul2_Dio_Ip_WritePin(LED0_PORT, LED0_PIN, 1U);
     	Siul2_Dio_Ip_WritePin(LED1_PORT, LED1_PIN, 0U);
 
-    	TestDelay(4800000);
+    	elapsed = 0;
+    	do
+    	{
+    		elapsed += OsIf_GetElapsed(&timer, OSIF_COUNTER_SYSTEM);
 
-    	Swt_Ip_Service(0);
+    		Swt_Ip_Service(0);
+    	}
+    	while ( elapsed < usec_in_ticks);
+
+//    	TestDelay(4800000);
+//    	OsIf_TimeDelay(1000);
+
+
 
     	Siul2_Dio_Ip_WritePin(LED0_PORT, LED0_PIN, 0U);
     	Siul2_Dio_Ip_WritePin(LED1_PORT, LED1_PIN, 1U);
 
-    	TestDelay(4800000);
+    	elapsed = 0;
+    	do
+    	{
+    		elapsed += OsIf_GetElapsed(&timer, OSIF_COUNTER_SYSTEM);
+
+    		Swt_Ip_Service(0);
+    	}
+    	while ( elapsed < usec_in_ticks);
+
+//    	TestDelay(4800000);
 
     	Swt_Ip_Service(0);
 
